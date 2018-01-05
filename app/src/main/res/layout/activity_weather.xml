@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/black_shadow"
+    android:layout_height="match_parent"
+    tools:context="com.ashraf.weather.photos.presentationlayer.activity.weatherActivity.WeatherActivity">
+
+    <ImageView
+        android:id="@+id/photo_imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/place_name_textInputLayout"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:textColorHint="@color/white"
+        app:hintTextAppearance="@style/MyTextLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/place_name_editText"
+            style="@style/LightEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/place_name" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/weather_temperature_textView"
+        style="@style/MyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/weather_temperature"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_name_textInputLayout" />
+
+    <TextView
+        android:id="@+id/weather_description_textView"
+        style="@style/MyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="@string/weather_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_temperature_textView" />
+
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_black_solid_30_corner_radius"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/retry_button"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_black_border"
+        android:text="@string/retry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintBottom_toTopOf="@id/save_button"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="invisible" />
+
+
+</android.support.constraint.ConstraintLayout>

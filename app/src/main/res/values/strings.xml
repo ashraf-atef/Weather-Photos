@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="regular_font_path">helvetica/helvetica-regular.ttf</string>
+    <string name="title_activity_home">Home</string>
+    <string name="location_not_working">Location is not working</string>
+    <string name="location_not_working_message">Enable location services</string>
+
+    <string name="take_photo">Take a photo</string>
+    <string name="select_file">"Select file"</string>
+
+    <string-array name="pick_image_options">
+        <item name="take_photo">Take a Photo</item>
+        <item name="choose_from_library">Choose from library</item>
+        <item name="cancel">Cancel</item>
+    </string-array>
+
+    <!-- weather activity -->
+    <string name="place_name">Place Name</string>
+    <string name="weather_temperature">Weather Temperature...</string>
+    <string name="weather_description">Weather Description...</string>
+    <string name="save">Save</string>
+    <string name="retry">Retry</string>
+
+    <!-- General Messages -->
+    <string name="error_message">Something went wrong please try again later</string>
+    <string name="connection_error_message">Please check your connection with the internet</string>
+</resources>

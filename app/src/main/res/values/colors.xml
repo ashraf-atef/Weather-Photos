@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#fff</color>
+
+    <color name="black">#000</color>
+    <color name="black_shadow">#96000000</color>
+
+    <color name="white_shadow1">#FFF2F3F4</color>
+    <color name="white_shadow2">#AAF2F3F4</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="gray1">#FFB3B7C0</color>
+    <color name="gray2">#FF39414D</color>
+    <color name="gray3">#FF808896</color>
+    <color name="gray4">#FFE1E4E8</color>
+    <color name="gray5">#FFF2F3F4</color>
+    <color name="gray6">#FFC6CAD2</color>
+    <color name="gray7">#FFB4BCCA</color>
+    <color name="gray8">#FFB0B3C5</color>
+    <color name="gray9">#FFE1E4E8</color>
+    <color name="gray10">#FFE1E4E8</color>
+
+    <color name="pink">#FFF32A64</color>
+    <color name="pink_shadow">#73FE6498</color>
+    <color name="pink_shadow2">#00fe6498</color>
+    <color name="pink2">#FFFE619A</color>
+    <color name="pink3">#FFFF3D79</color>
+    <color name="pink5">#FFF9A9A1</color>
+
+
+    <color name="purple">#FF45208A</color>
+    <color name="purple_shadow">#FF9B7CF4</color>
+    <color name="purple1">#FFBE9AFC</color>
+    <color name="purple2">#FF5F49E7</color>
+    <color name="purple3">#FF7B128B</color>
+    <color name="purple_4">#FF7979FD</color>
+
+    <color name="orange">#FFFEA86B</color>
+    <color name="orange_shadow">#66F9386C</color>
+
+    <color name="green_shadow">#7F00C97E</color>
+
+    <color name="blue_shadow">#805E5EEA</color>
+
+</resources>

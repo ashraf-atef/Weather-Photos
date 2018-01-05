@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CategoryItem">
+        <attr name="image" format="integer"/>
+        <attr name="backgroundDrawable" format="integer"/>
+        <attr name="title" format="string" />
+        <attr name="number" format="integer"/>
+    </declare-styleable>
+</resources>
