@@ -8,9 +8,9 @@ import javax.inject.Inject;
 public class WeatherActivityPresenter extends WeatherActivityContract.Presenter {
 
     @Inject
-    GetWeatherUseCase getWeatherUseCase;
+    public GetWeatherUseCase getWeatherUseCase;
 
-    protected WeatherActivityPresenter(WeatherActivityContract.View view) {
+    public WeatherActivityPresenter(WeatherActivityContract.View view) {
         super(view);
         WeatherPhotoApplication.getAppComponent().inject(this);
     }

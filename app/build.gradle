@@ -9,7 +9,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ashraf.weather.photos.MockTestRunner"
     }
     buildTypes {
         release {
@@ -22,6 +22,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
 ext {
     archComponents = "1.0.0"
     retrofit = '2.3.0'
@@ -60,5 +61,5 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     testImplementation 'org.mockito:mockito-core:2.11.0'
-    testCompile 'org.robolectric:robolectric:3.3'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.8'
 }
