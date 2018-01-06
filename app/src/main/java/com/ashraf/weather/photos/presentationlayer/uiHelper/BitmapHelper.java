@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.ashraf.weather.photos.presentationlayer.activity.homeActivity.BitmapDto;
 
@@ -52,8 +55,8 @@ public class BitmapHelper {
 
     public boolean saveBitmapOnDisk(Bitmap bitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File destination = new File(createPhotosDirIfNotExists(),
+        bitmap.compress(Bitmap.CompressFormat.JPEG, PHOTO_QUALITY, bytes);
+        File destination = new File(getPhotoDir(),
                 System.currentTimeMillis() + PHOTO_EXTENATION);
         FileOutputStream fo;
         try {
@@ -71,7 +74,7 @@ public class BitmapHelper {
         return false;
     }
 
-    private File createPhotosDirIfNotExists() {
+    public File getPhotoDir() {
         File photosDir = new File(Environment.getExternalStorageDirectory(), PHOTOS_DIR_NAME);
         if (!photosDir.exists()) {
             photosDir.mkdir();
@@ -84,7 +87,7 @@ public class BitmapHelper {
             return photoList;
         }
 
-        File photosDir = new File(createPhotosDirIfNotExists().getPath());
+        File photosDir = new File(getPhotoDir().getPath());
         File[] listOfFiles = photosDir.listFiles();
         if (listOfFiles != null) {
             for (int i = 0; i < listOfFiles.length; i++) {
@@ -99,9 +102,7 @@ public class BitmapHelper {
     }
 
     public void addPhotoToCacheList(String name, Bitmap bitmap) {
-        if (isNullableCacheList()) {
-            getAllSavedImages();
-        }
+        getAllSavedImages();
         photoList.add(new BitmapDto(name, bitmap));
     }
 
@@ -121,52 +122,56 @@ public class BitmapHelper {
         return BitmapFactory.decodeFile(filePath);
     }
 
-   public Bitmap getLastBitmap() {
-        if (isNullableCacheList()) {
-            getAllSavedImages();
-        }
-        return photoList.get(photoList.size()-1).getBitmap();
-   }
-
-    public Bitmap typeTextAboveBitmap(Bitmap bitmap, String text, int textSize, int color) {
-        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas(mutableBitmap);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setTextSize(textSize);
-        canvas.drawText(text, bitmap.getWidth() / 2, bitmap.getHeight() / 2, paint);
-        return mutableBitmap;
+    public Bitmap getLastBitmap() {
+        getAllSavedImages();
+        return photoList.get(photoList.size() - 1).getBitmap();
     }
 
-    public Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
+    public void deleteLastBitmap() {
+        File file = new File(getPhotoDir(), photoList.get(photoList.size() - 1).getFileName());
+        if (file.exists()) {
+            file.delete();
+            photoList.remove(photoList.size() - 1);
+        }
+    }
 
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
+    public File getFileFromPosition(int position) {
+        return new File(getPhotoDir(), photoList.get(position).getFileName());
+    }
+
+    public Bitmap drawTextToBitmap(Bitmap bitmap, float scale, String text, int textColor, int shadowColor) {
+        try {
+            int textSize;
+            if (bitmap.getHeight() < 500) {
+                textSize = 3;
+            } else {
+                textSize = 12;
             }
+
+            android.graphics.Bitmap.Config bitmapConfig =   bitmap.getConfig();
+            if(bitmapConfig == null) {
+                bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+            }
+            bitmap = bitmap.copy(bitmapConfig, true);
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(textColor);
+            paint.setTextSize((int) (textSize * scale));
+            paint.setShadowLayer(1f, 0f, 1f, shadowColor);
+
+            Rect bounds = new Rect();
+            paint.getTextBounds(text, 0, text.length(), bounds);
+            int x = (bitmap.getWidth() - bounds.width())/6;
+            int y = (bitmap.getHeight() + bounds.height())/5;
+            canvas.drawText(text, x * scale, y * scale, paint);
+            Log.d("BIT", bitmap.getWidth()+"-"+bitmap.getHeight());
+            return bitmap;
+        } catch (Exception e) {
+            // TODO: handle exception
+            return null;
         }
 
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
-    public Bitmap overlay(Bitmap backgroundBitmap, Bitmap foregroundBitmap) {
-        Bitmap bmOverlay = Bitmap.createBitmap(backgroundBitmap.getWidth(), backgroundBitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        foregroundBitmap.setWidth(backgroundBitmap.getWidth());
-        backgroundBitmap.setHeight(backgroundBitmap.getHeight());
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(backgroundBitmap, new Matrix(), null);
-        canvas.drawBitmap(foregroundBitmap, new Matrix(), null);
-        return bmOverlay;
-    }
 }

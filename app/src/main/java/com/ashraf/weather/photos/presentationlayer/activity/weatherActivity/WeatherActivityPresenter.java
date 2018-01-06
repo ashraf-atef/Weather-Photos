@@ -1,6 +1,6 @@
 package com.ashraf.weather.photos.presentationlayer.activity.weatherActivity;
 
-import com.ashraf.weather.photos.assets.application.TawseelaApplication;
+import com.ashraf.weather.photos.assets.application.WeatherPhotoApplication;
 import com.ashraf.weather.photos.domainlayer.getWeatherRepository.GetWeatherUseCase;
 
 import javax.inject.Inject;
@@ -12,7 +12,7 @@ public class WeatherActivityPresenter extends WeatherActivityContract.Presenter 
 
     protected WeatherActivityPresenter(WeatherActivityContract.View view) {
         super(view);
-        TawseelaApplication.getAppComponent().inject(this);
+        WeatherPhotoApplication.getAppComponent().inject(this);
     }
 
     @Override

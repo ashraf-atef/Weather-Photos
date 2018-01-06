@@ -1,7 +1,6 @@
 package com.ashraf.weather.photos.presentationlayer.activity.galleryActivity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
     LayoutInflater mLayoutInflater;
     List<BitmapDto> bitmapDtoList;
 
-    public GalleryPagerAdapter(Context context, List<BitmapDto> bitmapDtoList) {
+    public GalleryPagerAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.bitmapDtoList = bitmapDtoList;
+    }
+
+    public void setData(List<BitmapDto> bitmapDtoList) {
         this.bitmapDtoList = bitmapDtoList;
     }
 
@@ -38,7 +41,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = mLayoutInflater.inflate(R.layout.photo_layout2, container, false);
+        View itemView = mLayoutInflater.inflate(R.layout.photo_gallery_layout, container, false);
 
         ImageView imageView =  itemView.findViewById(R.id.imageView);
         imageView.setImageBitmap(bitmapDtoList.get(position).getBitmap());

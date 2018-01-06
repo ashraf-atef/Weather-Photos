@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,8 +19,8 @@ public class PhotoAdaptor extends RecyclerView.Adapter<PhotoAdaptor.ItemViewHold
     List<BitmapDto> bitmapList;
     OnItemClickListener onItemClickListener;
 
-    public PhotoAdaptor(List<BitmapDto> bitmaplist, OnItemClickListener onItemClickListener) {
-        this.bitmapList = bitmaplist;
+    public PhotoAdaptor(OnItemClickListener onItemClickListener) {
+        this.bitmapList = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -37,6 +38,10 @@ public class PhotoAdaptor extends RecyclerView.Adapter<PhotoAdaptor.ItemViewHold
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int position) {
         itemViewHolder.bind(position);
+    }
+
+    public void setData(List<BitmapDto> list) {
+        bitmapList = list;
     }
 
 

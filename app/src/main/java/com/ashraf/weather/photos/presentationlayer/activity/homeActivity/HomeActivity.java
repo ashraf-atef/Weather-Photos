@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.ashraf.weather.photos.R;
 import com.ashraf.weather.photos.assets.constant.Utilities;
@@ -26,6 +26,14 @@ import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemClickListener {
 
+    int selectedOption;
+    private static final int TAKE_A_PHOTO_OPTION = 0;
+    private static final int CHOOSE_FROM_GALLERY_OPTION = 1;
+    private static final int CANCELED_OPTION = 2;
+    private static final int GET_HISTORY_OPTION = 3;
+
+    private static final int CAMERA_REQUEST_CODE = 11;
+    private static final int GALLERY_REQUEST_CODE = 12;
 
     @BindView(R.id.add_FAB)
     FloatingActionButton addFAB;
@@ -33,9 +41,9 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
     ConstraintLayout coordinatorLayout;
     @BindView(R.id.photo_recyclerView)
     RecyclerView photoRecyclerView;
-
     PhotoAdaptor photoAdaptor;
-
+    @BindView(R.id.toolBar)
+    Toolbar toolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +57,14 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
         photoRecyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getBaseContext(), 2);
         photoRecyclerView.setLayoutManager(gridLayoutManager);
-        photoAdaptor = new PhotoAdaptor(bitmapHelper.getAllSavedImages(), this);
+        photoAdaptor = new PhotoAdaptor(this);
         photoRecyclerView.setAdapter(photoAdaptor);
-    }
-
-    public void notifyDataChanged() {
-        photoAdaptor.notifyDataSetChanged();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        notifyDataChanged();
+        addAdaptorData();
     }
 
     @OnClick(R.id.add_FAB)
@@ -68,20 +72,23 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
         selectImage();
     }
 
-    int SELECTED_OPTION;
-    private static int TAKE_A_PHOTO_OPTION = 0;
-    private static int CHOOSE_FROM_GALLERY_OPTION = 1;
-    private static int CANCELED_OPTION = 2;
+    public void addAdaptorData() {
+        selectedOption = GET_HISTORY_OPTION;
+        if (mUtilities.checkPermission(this)) {
+            photoAdaptor.setData(mBitmapHelper.getAllSavedImages());
+            notifyAdaptorDataChanged();
+        }
+    }
 
-    int CAMERA_REQUEST_CODE = 11;
-    int GALLERY_REQUEST_CODE = 12;
-
+    public void notifyAdaptorDataChanged() {
+        photoAdaptor.notifyDataSetChanged();
+    }
 
     private void selectImage() {
         final CharSequence[] items = getResources().getStringArray(R.array.pick_image_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
         builder.setTitle(getString(R.string.take_photo));
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -89,15 +96,18 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
                     dialog.dismiss();
                 } else {
                     boolean accessPermission = mUtilities.checkPermission(HomeActivity.this);
-                    if (accessPermission) {
-                        if (item == TAKE_A_PHOTO_OPTION) {
-                            SELECTED_OPTION = TAKE_A_PHOTO_OPTION;
+                    if (item == TAKE_A_PHOTO_OPTION) {
+                        selectedOption = TAKE_A_PHOTO_OPTION;
+                        if (accessPermission) {
                             openCameraIntent();
-                        } else if (item == CHOOSE_FROM_GALLERY_OPTION) {
-                            SELECTED_OPTION = CHOOSE_FROM_GALLERY_OPTION;
+                        }
+                    } else if (item == CHOOSE_FROM_GALLERY_OPTION) {
+                        selectedOption = CHOOSE_FROM_GALLERY_OPTION;
+                        if (accessPermission) {
                             openGalleryIntent();
                         }
                     }
+
                 }
             }
         });
@@ -119,10 +129,13 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
         switch (requestCode) {
             case Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (SELECTED_OPTION == TAKE_A_PHOTO_OPTION)
+                    if (selectedOption == TAKE_A_PHOTO_OPTION) {
                         openCameraIntent();
-                    else if (SELECTED_OPTION == CHOOSE_FROM_GALLERY_OPTION)
+                    } else if (selectedOption == CHOOSE_FROM_GALLERY_OPTION) {
                         openGalleryIntent();
+                    } else if (selectedOption == GET_HISTORY_OPTION) {
+                        addAdaptorData();
+                    }
                 } else {
                     //code for deny
                 }
@@ -136,14 +149,14 @@ public class HomeActivity extends BaseActivity implements PhotoAdaptor.OnItemCli
         if (resultCode == Activity.RESULT_OK) {
             Bitmap bitmap = null;
             if (requestCode == GALLERY_REQUEST_CODE) {
-                bitmap = bitmapHelper.getBitmapFromGalleryResultIntent(getBaseContext(), data);
+                bitmap = mBitmapHelper.getBitmapFromGalleryResultIntent(getBaseContext(), data);
 
             } else if (requestCode == CAMERA_REQUEST_CODE) {
-                bitmap = bitmapHelper.getBitmapFromCameraResultIntent(getBaseContext(), data);
+                bitmap = mBitmapHelper.getBitmapFromCameraResultIntent(getBaseContext(), data);
             } else {
                 return;
             }
-            bitmapHelper.saveBitmapOnDisk(bitmap);
+            mBitmapHelper.saveBitmapOnDisk(bitmap);
             WeatherActivity.start(this);
         }
     }

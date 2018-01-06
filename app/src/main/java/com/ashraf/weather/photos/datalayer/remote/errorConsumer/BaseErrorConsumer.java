@@ -1,6 +1,6 @@
 package com.ashraf.weather.photos.datalayer.remote.errorConsumer;
 
-import com.ashraf.weather.photos.assets.application.TawseelaApplication;
+import com.ashraf.weather.photos.assets.application.WeatherPhotoApplication;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -11,7 +11,7 @@ import io.reactivex.functions.Consumer;
 public abstract class BaseErrorConsumer implements Consumer<Throwable> {
 
     public BaseErrorConsumer() {
-        TawseelaApplication.getAppComponent().inject(this);
+        WeatherPhotoApplication.getAppComponent().inject(this);
     }
 
     @Override

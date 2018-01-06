@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Weather App</string>
-    <string name="regular_font_path">helvetica/helvetica-regular.ttf</string>
-    <string name="title_activity_home">Home</string>
-    <string name="location_not_working">Location is not working</string>
-    <string name="location_not_working_message">Enable location services</string>
 
-    <string name="take_photo">Take a photo</string>
+    <!-- history activity -->
+    <string name="history">History</string>
+    <string name="take_photo">Select Method</string>
     <string name="select_file">"Select file"</string>
 
     <string-array name="pick_image_options">
@@ -15,11 +13,19 @@
     </string-array>
 
     <!-- weather activity -->
+    <string name="new_photo">New Photo</string>
     <string name="place_name">Place Name</string>
     <string name="weather_temperature">Weather Temperature...</string>
     <string name="weather_description">Weather Description...</string>
     <string name="save">Save</string>
     <string name="retry">Retry</string>
+    <string name="wait_message">please wait until getting current weather load</string>
+    <string name="empty_place_name_message">Please enter place name</string>
+
+    <!-- gallery activity -->
+    <string name="gallery">Gallery</string>
+
+
 
     <!-- General Messages -->
     <string name="error_message">Something went wrong please try again later</string>
